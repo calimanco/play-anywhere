@@ -1,7 +1,4 @@
-import DummyClass from './play-anywhere'
-
-// export types
-export * from './types'
+import playAnywhere from './play-anywhere'
 
 // export main
-export default DummyClass
+export default playAnywhere
