@@ -1,8 +1,11 @@
 import path from 'path'
 import { HotModuleReplacementPlugin } from 'webpack'
+import { PaConfig } from '../types'
 
-export default {
-  templateDir: path.join(__dirname, 'templates'),
+const defaultConfig: PaConfig = {
+  root: path.resolve(),
+  staticDir: '',
+  templateDir: path.join(__dirname, '..', 'templates'),
   serverPort: 3000,
   entryRegExps: [/app\.(ts|js)$/i],
   templateRegExps: [/index\.(htm|html|ejs)$/i],
@@ -41,6 +44,7 @@ export default {
       colors: true
     },
     plugins: [new HotModuleReplacementPlugin()]
-  },
-  expressConfig: {}
+  }
 }
+
+export default defaultConfig
