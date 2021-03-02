@@ -7,11 +7,15 @@ export interface Entry {
 }
 
 export interface PaConfig {
+  debug: boolean
+  silent: boolean
   root: string
   staticDir: string
-  templateDir: string
   serverPort: number
-  entryRegExps: RegExp[]
-  templateRegExps: RegExp[]
+  indexTemplate: string
+  pageTemplate: string
+  entryMatch: Array<string | RegExp>
+  templateMatch: Array<string | RegExp>
+  exclude: Array<string | RegExp>
   webpackConfig: Configuration
 }

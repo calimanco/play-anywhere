@@ -1,19 +1,23 @@
+import { PaConfig } from '../types'
 import express from 'express'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 
-import getWebpackConfig from './getWebpackConfig'
 const app = express()
 
-getWebpackConfig().then(config => {
-  const compiler = webpack(config)
+export default function (config: PaConfig): void {
+  const { webpackConfig } = config
+  const compiler = webpack(webpackConfig)
 
   // app.use(express.static(publicDir))
 
   app.use(
     webpackDevMiddleware(compiler, {
-      publicPath: config.output.publicPath
+      publicPath:
+        webpackConfig.output !== undefined
+          ? (webpackConfig.output.publicPath as string)
+          : '/'
     })
   )
 
@@ -26,4 +30,4 @@ getWebpackConfig().then(config => {
       `Server listening on http://localhost:${serverPort}, Ctrl+C to stop`
     )
   })
-})
+}
