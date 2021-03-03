@@ -19,7 +19,5 @@ export default function playAnywhere(): void {
   // ) {
   //   config.port = argv.p || argv.port || process.env.PORT
   // }
-  main(defaultConfig).then(entryList => {
-    console.log(entryList)
-  })
+  main(defaultConfig)
 }

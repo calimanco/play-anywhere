@@ -6,7 +6,7 @@ import defaultConfig from '../helpers/defaultConfig'
 export default async function main(config: PaConfig): Promise<any> {
   const { silent, root } = config
   if (!silent) {
-    console.log('Read root dir.')
+    console.log('Play-anywhere is running.')
   }
   let readRootDirResult = []
   try {
@@ -16,11 +16,11 @@ export default async function main(config: PaConfig): Promise<any> {
     process.exit(0)
   }
   if (!silent) {
-    console.log('Build entry.')
+    console.log('Building entries.')
   }
   const res = await entryFactory(readRootDirResult, defaultConfig)
   if (!silent) {
-    console.log('Building finish.')
+    console.log(`${res.length} entries built.`)
   }
   return res
 }

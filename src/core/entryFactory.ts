@@ -12,22 +12,23 @@ export default async function entryFactory(
   const entryList: Entry[] = []
   const subFolderList: string[] = []
   list.forEach(i => {
-    // simple mode
     const entry = path.join(config.root, i.name)
-    const { name, ext } = path.parse(i.name)
-    console.log(name, ext)
-    if (
-      i.isFile() &&
-      !matchFile(entry, exclude) &&
-      ext.match(/\.(ts|js)$/i) !== null
-    ) {
+    const { dir, name, ext, base } = path.parse(entry)
+    // exclude
+    if (checkExclude(i, exclude)) {
+      return
+    }
+    // simple mode
+    if (i.isFile() && ext.match(/(ts|js)$/i) !== null) {
       entryList.push({
+        dir,
         name,
-        entryFile: entry,
-        templateFile: pageTemplate
+        ext,
+        base,
+        pageTemplate
       })
       if (debug) {
-        console.log(colors.green(`${name} built`))
+        console.log(colors.green(`${name}`))
       }
       return
     }
@@ -53,6 +54,7 @@ async function scanSubFolder(
     debug,
     entryMatch,
     templateMatch,
+    exclude,
     pageTemplate
   } = config
   const length = subFolderList.length
@@ -73,7 +75,7 @@ async function scanSubFolder(
             entryMatch,
             templateMatch,
             pageTemplate,
-            fileList
+            fileList.filter(i => i.isFile() && !checkExclude(i, exclude))
           )
           if (entry !== null) {
             result.push(entry)
@@ -115,28 +117,40 @@ function buildEntry(
   pageTemplate: string,
   fileList: Dirent[]
 ): Entry | null {
-  let name = ''
-  let entryFile = ''
-  let templateFile = ''
-  fileList.some(file => {
-    if (!file.isFile()) {
-      return false
+  let entryFilePath = ''
+  let templateFilePath = ''
+  entryMatch.some(reg => {
+    const fileName = matchFile(fileList, reg)
+    if (fileName !== '') {
+      entryFilePath = path.join(dirPath, fileName)
+      return true
     }
-    const filePath = path.join(dirPath, file.name)
-    if (entryFile === '' && matchFile(filePath, entryMatch)) {
-      name = file.name
-      entryFile = filePath
-    }
-    if (templateFile === '' && matchFile(filePath, templateMatch)) {
-      templateFile = filePath
-    }
-    return entryFile !== '' && templateFile !== ''
+    return false
   })
-  return entryFile === ''
-    ? null
-    : {
-        name,
-        entryFile,
-        templateFile: templateFile === '' ? pageTemplate : templateFile
-      }
+  templateMatch.some(reg => {
+    const fileName = matchFile(fileList, reg)
+    if (fileName !== '') {
+      templateFilePath = path.join(dirPath, fileName)
+      return true
+    }
+    return false
+  })
+  if (entryFilePath === '') {
+    return null
+  } else {
+    const { dir, name, base, ext } = path.parse(entryFilePath)
+    return {
+      name,
+      base,
+      ext,
+      dir,
+      pageTemplate: templateFilePath === '' ? pageTemplate : templateFilePath
+    }
+  }
+}
+
+function checkExclude(file: Dirent, exclude: Array<RegExp | string>): boolean {
+  return exclude.some(reg => {
+    return file.name.search(reg) !== -1
+  })
 }

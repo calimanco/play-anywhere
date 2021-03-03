@@ -12,9 +12,9 @@ const defaultConfig: PaConfig = {
   indexTemplate: path.join(templateDir, 'index.ejs'),
   pageTemplate: path.join(templateDir, 'page.ejs'),
   serverPort: 3000,
-  entryMatch: [/app\.(ts|js)$/i],
+  entryMatch: ['main', /app\.(ts|js)$/i],
   templateMatch: [/index\.(htm|html|ejs)$/i],
-  exclude: [/^node_modules$/i, /^\./i],
+  exclude: [/jest/i, /^node_modules$/i, /^\./i],
   webpackConfig: {
     mode: 'development',
     context: path.join(__dirname, '..'),

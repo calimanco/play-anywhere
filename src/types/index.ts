@@ -2,8 +2,10 @@ import { Configuration } from 'webpack'
 
 export interface Entry {
   name: string
-  entryFile: string
-  templateFile: string
+  ext: string
+  dir: string
+  base: string
+  pageTemplate: string
 }
 
 export interface PaConfig {
