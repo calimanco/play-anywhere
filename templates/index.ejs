@@ -9,8 +9,8 @@
     <div class="container">
       <h1>Demo List</h1>
       <ul>
-        <% Object.keys(entryMap).forEach((dir)=>{%>
-        <li><a href="<%=dir%>"><%=dir%></a></li>
+        <% entries.forEach((i)=>{%>
+        <li><a href="<%=i.name%>"><%=i.name%></a></li>
         <% }) %>
       </ul>
     </div>

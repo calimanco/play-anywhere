@@ -21,7 +21,15 @@ export default {
     }
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
-  external: ['minimist', 'webpack', 'colors'],
+  external: [
+    'minimist',
+    'colors',
+    'express',
+    'webpack',
+    'html-webpack-plugin',
+    'webpack-dev-middleware',
+    'webpack-hot-middleware'
+  ],
   watch: {
     include: 'src/**'
   },

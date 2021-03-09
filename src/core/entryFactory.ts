@@ -1,15 +1,15 @@
+import { PaEntry, PaConfig } from '../types'
 import fs, { Dirent } from 'fs'
-import { Entry, PaConfig } from '../types'
 import path from 'path'
-import { matchFile } from '../helpers/utils'
 import * as colors from 'colors'
+import { matchFile } from '../helpers/utils'
 
 export default async function entryFactory(
   list: Dirent[],
   config: PaConfig
-): Promise<Entry[]> {
-  const { debug, pageTemplate, exclude } = config
-  const entryList: Entry[] = []
+): Promise<PaEntry[]> {
+  const { silent, debug, pageTemplate, exclude } = config
+  const entryList: PaEntry[] = []
   const subFolderList: string[] = []
   list.forEach(i => {
     const entry = path.join(config.root, i.name)
@@ -27,8 +27,8 @@ export default async function entryFactory(
         base,
         pageTemplate
       })
-      if (debug) {
-        console.log(colors.green(`${name}`))
+      if (!silent && debug) {
+        console.log(`${name} built`)
       }
       return
     }
@@ -41,13 +41,25 @@ export default async function entryFactory(
     return entryList
   }
   const scanSubFolderRes = await scanSubFolder(config, subFolderList)
-  return entryList.concat(scanSubFolderRes)
+  const result = entryList.concat(scanSubFolderRes)
+  if (!silent) {
+    if (result.length === 0) {
+      console.log(colors.yellow(`No entries found.`))
+    } else {
+      console.group(
+        colors.underline.cyan(`${result.length} entries have been created: `)
+      )
+      console.log(colors.green(result.map(i => i.name).join('\n')))
+      console.groupEnd()
+    }
+  }
+  return result
 }
 
 async function scanSubFolder(
   config: PaConfig,
   subFolderList: string[]
-): Promise<Entry[]> {
+): Promise<PaEntry[]> {
   const {
     root,
     silent,
@@ -58,8 +70,7 @@ async function scanSubFolder(
     pageTemplate
   } = config
   const length = subFolderList.length
-  const result: Entry[] = []
-  const resultMsg: string[] = []
+  const entryList: PaEntry[] = []
   const errMsg: string[] = []
   let count = 0
 
@@ -71,15 +82,18 @@ async function scanSubFolder(
         .then(fileList => {
           count += 1
           const entry = buildEntry(
+            subFolder,
             subFolderPath,
             entryMatch,
             templateMatch,
             pageTemplate,
             fileList.filter(i => i.isFile() && !checkExclude(i, exclude))
           )
+          if (!silent && debug && entry !== null) {
+            console.log(`${entry.name} built`)
+          }
           if (entry !== null) {
-            result.push(entry)
-            resultMsg.push(`${subFolder} built`)
+            entryList.push(entry)
           }
           if (length === count) {
             resolve()
@@ -95,28 +109,27 @@ async function scanSubFolder(
     })
   })
 
-  if (!silent && debug && resultMsg.length !== 0) {
-    console.log(colors.green(resultMsg.join('\n')))
-  }
-
   if (!silent && errMsg.length !== 0) {
     console.group(
-      colors.underline.red('Some errors occurred building entries: ')
+      colors.underline.red(
+        `${errMsg.length} errors occurred building entries: `
+      )
     )
     console.log(colors.reset(errMsg.join('\n')))
     console.groupEnd()
   }
 
-  return result
+  return entryList
 }
 
 function buildEntry(
+  name: string,
   dirPath: string,
   entryMatch: Array<RegExp | string>,
   templateMatch: Array<RegExp | string>,
   pageTemplate: string,
   fileList: Dirent[]
-): Entry | null {
+): PaEntry | null {
   let entryFilePath = ''
   let templateFilePath = ''
   entryMatch.some(reg => {
@@ -138,7 +151,7 @@ function buildEntry(
   if (entryFilePath === '') {
     return null
   } else {
-    const { dir, name, base, ext } = path.parse(entryFilePath)
+    const { dir, base, ext } = path.parse(entryFilePath)
     return {
       name,
       base,

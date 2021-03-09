@@ -1,6 +1,6 @@
 import { Configuration } from 'webpack'
 
-export interface Entry {
+export interface PaEntry {
   name: string
   ext: string
   dir: string

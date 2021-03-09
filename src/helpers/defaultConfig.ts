@@ -1,20 +1,20 @@
+import { PaConfig } from '../types'
 import path from 'path'
 import { HotModuleReplacementPlugin } from 'webpack'
-import { PaConfig } from '../types'
 
 const templateDir = path.join(__dirname, '..', 'templates')
 
 const defaultConfig: PaConfig = {
   debug: true,
   silent: false,
-  root: path.resolve(),
+  root: path.resolve('demo'),
   staticDir: '',
   indexTemplate: path.join(templateDir, 'index.ejs'),
   pageTemplate: path.join(templateDir, 'page.ejs'),
   serverPort: 3000,
-  entryMatch: ['main', /app\.(ts|js)$/i],
-  templateMatch: [/index\.(htm|html|ejs)$/i],
-  exclude: [/jest/i, /^node_modules$/i, /^\./i],
+  entryMatch: [/^app\.(ts|js)$/i],
+  templateMatch: [/^index\.(htm|html|ejs)$/i],
+  exclude: [/^node_modules$/i, /^\./i],
   webpackConfig: {
     mode: 'development',
     context: path.join(__dirname, '..'),
@@ -46,9 +46,7 @@ const defaultConfig: PaConfig = {
     resolve: {
       extensions: ['.ts', '.js']
     },
-    stats: {
-      colors: true
-    },
+    stats: 'none',
     plugins: [new HotModuleReplacementPlugin()]
   }
 }
