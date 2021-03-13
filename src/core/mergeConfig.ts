@@ -2,23 +2,25 @@ import { PaConfig } from '../types'
 import { isPlainObject, deepMerge } from '../helpers/utils'
 
 export interface Strategy {
-  keys: string[]
+  keys: Array<keyof PaConfig>
   fn: (val1: any, val2: any) => any
 }
 
-const strategies = Object.create(null)
+const strategies: {
+  [key: string]: Strategy['fn']
+} = Object.create(null)
 
 const defaultStrategy: Strategy = {
   keys: [],
   fn: (val1, val2) => {
-    return typeof val2 !== 'undefined' ? val2 : val1
+    return val2 == null ? val1 : val2
   }
 }
 
 const fromVal2Strategy: Strategy = {
   keys: [],
   fn: (val1, val2) => {
-    if (typeof val2 !== 'undefined') {
+    if (val2 != null) {
       return val2
     }
   }
@@ -29,7 +31,7 @@ const deepMergeStrategy: Strategy = {
   fn: (val1, val2) => {
     if (isPlainObject(val2)) {
       return deepMerge(val1, val2)
-    } else if (typeof val2 !== 'undefined') {
+    } else if (val2 != null) {
       return val2
     } else if (isPlainObject(val1)) {
       return deepMerge(val1)
@@ -51,20 +53,21 @@ export default function mergeConfig(c1: PaConfig, c2?: PaConfig): PaConfig {
   const config = Object.create(null)
 
   if (c2 != null) {
-    Object.keys(c2).forEach(key => {
-      mergeField(key)
-    })
-  }
-
-  Object.keys(c1).forEach(key => {
-    if (c2 != null && (c2 as any)[key] != null) {
+    for (const key of Object.keys(c2) as Array<keyof PaConfig>) {
       mergeField(key)
     }
-  })
+  }
 
-  function mergeField(key: string): void {
-    const strategy = strategies[key] != null ? strategies[key] : defaultStrategy
-    config[key] = strategy((c1 as any)[key], (c2 as any)[key])
+  for (const key of Object.keys(c1) as Array<keyof PaConfig>) {
+    if (c2?.[key] != null) {
+      mergeField(key)
+    }
+  }
+
+  function mergeField(key: keyof PaConfig): void {
+    const strategy =
+      strategies[key] != null ? strategies[key] : defaultStrategy.fn
+    config[key] = strategy(c1[key], c2?.[key])
   }
 
   return config

@@ -2,6 +2,14 @@ import { Dirent } from 'fs'
 
 const toString = Object.prototype.toString
 
+export function isPlainObject(val: any): val is Object {
+  return toString.call(val) === '[object Object]'
+}
+
+export function isStrictNull(val: any): val is undefined | null {
+  return typeof val === 'undefined' || (typeof val === 'object' && val === null)
+}
+
 export function matchFile(fileList: Dirent[], reg: RegExp | string): string {
   let result: string = ''
   fileList.some(file => {
@@ -12,10 +20,6 @@ export function matchFile(fileList: Dirent[], reg: RegExp | string): string {
     return false
   })
   return result
-}
-
-export function isPlainObject(val: any): val is Object {
-  return toString.call(val) === '[object Object]'
 }
 
 export function deepMerge(...objs: any[]): any {

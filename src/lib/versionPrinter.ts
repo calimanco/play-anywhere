@@ -1,8 +1,8 @@
+import { isStrictNull } from '../helpers/utils'
+
 export default function versionPrinter(): void {
   console.log(
-    `v${
-      typeof process.env.version === 'string' ? process.env.version : 'unknown'
-    }`
+    `v${!isStrictNull(process.env.version) ? process.env.version : 'unknown'}`
   )
   process.exit(1)
 }
