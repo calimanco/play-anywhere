@@ -2,7 +2,7 @@ import { PaConfig } from '../types'
 import * as colors from 'colors'
 
 export default function readDistConfig(dir: string): {} | PaConfig {
-  let result = null
+  let result: any = {}
   try {
     result = require(dir)
   } catch (err) {
@@ -11,7 +11,7 @@ export default function readDistConfig(dir: string): {} | PaConfig {
   }
   if (result == null) {
     console.log(colors.yellow('Configuration file is empty.'))
-    return {}
+    return result
   }
   return result
 }

@@ -50,7 +50,7 @@ deepMergeStrategy.keys.forEach(key => {
 })
 
 export default function mergeConfig(c1: PaConfig, c2?: PaConfig): PaConfig {
-  const config = Object.create(null)
+  const config: PaConfig = {}
 
   if (c2 != null) {
     for (const key of Object.keys(c2) as Array<keyof PaConfig>) {
@@ -59,7 +59,7 @@ export default function mergeConfig(c1: PaConfig, c2?: PaConfig): PaConfig {
   }
 
   for (const key of Object.keys(c1) as Array<keyof PaConfig>) {
-    if (c2?.[key] != null) {
+    if (c2?.[key] == null) {
       mergeField(key)
     }
   }

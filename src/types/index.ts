@@ -9,15 +9,15 @@ export interface PaEntry {
 }
 
 export interface PaConfig {
-  debug: boolean
-  silent: boolean
-  root: string
-  staticDir: string
-  serverPort: number
-  indexTemplate: string
-  pageTemplate: string
-  entryMatch: Array<string | RegExp>
-  templateMatch: Array<string | RegExp>
-  exclude: Array<string | RegExp>
-  webpackConfig: Configuration
+  debug?: boolean
+  silent?: boolean
+  root?: string
+  staticDir?: string
+  serverPort?: number
+  indexTemplate?: string
+  pageTemplate?: string
+  entryMatch?: Array<string | RegExp>
+  templateMatch?: Array<string | RegExp>
+  exclude?: Array<string | RegExp>
+  webpackConfig?: Configuration
 }

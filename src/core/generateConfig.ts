@@ -1,12 +1,22 @@
 import { PaEntry, PaConfig } from '../types'
 import path from 'path'
+import * as colors from 'colors'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 export default function generateConfig(
   config: PaConfig,
   entries: PaEntry[]
-): PaConfig {
-  const { indexTemplate, webpackConfig } = config
+): Required<PaConfig> {
+  const { indexTemplate, webpackConfig, silent } = config
+  if (webpackConfig == null) {
+    if (silent == null || !silent) {
+      console.log(colors.red('Can not find webpack config.'))
+    }
+    throw new Error('Can not find webpack config.')
+  }
+  if (silent == null || !silent) {
+    webpackConfig.stats = 'none'
+  }
   webpackConfig.entry = entries.reduce((result: any, i) => {
     result[i.name] = {
       import: path.join(i.dir, i.base)
@@ -33,5 +43,5 @@ export default function generateConfig(
     webpackConfig.plugins !== undefined
       ? webpackConfig.plugins.concat(htmlPlugins)
       : htmlPlugins
-  return config
+  return config as Required<PaConfig>
 }

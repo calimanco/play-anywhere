@@ -6,16 +6,18 @@ import webpackHotMiddleware from 'webpack-hot-middleware'
 
 const app = express()
 
-export default function (config: PaConfig): void {
-  const { silent, webpackConfig, serverPort } = config
+export default function (config: Required<PaConfig>): void {
+  const { silent, webpackConfig, serverPort, staticDir } = config
   const compiler = webpack(webpackConfig)
 
-  // app.use(express.static(publicDir))
+  if (staticDir != null && staticDir !== '') {
+    app.use(express.static(staticDir))
+  }
 
   app.use(
     webpackDevMiddleware(compiler, {
       publicPath:
-        webpackConfig.output !== undefined
+        webpackConfig.output != null
           ? (webpackConfig.output.publicPath as string)
           : '/'
     })
@@ -24,7 +26,7 @@ export default function (config: PaConfig): void {
   app.use(webpackHotMiddleware(compiler))
 
   app.listen(serverPort, () => {
-    if (!silent) {
+    if ((silent == null || !silent) && serverPort != null) {
       console.log(
         `Server listening on http://localhost:${serverPort}, Ctrl+C to stop`
       )

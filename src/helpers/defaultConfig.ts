@@ -4,8 +4,8 @@ import { HotModuleReplacementPlugin } from 'webpack'
 
 const templateDir = path.join(__dirname, '..', 'templates')
 
-const defaultConfig: PaConfig = {
-  debug: true,
+const defaultConfig: Required<PaConfig> = {
+  debug: false,
   silent: false,
   root: path.resolve('demo'),
   staticDir: '',
@@ -46,7 +46,7 @@ const defaultConfig: PaConfig = {
     resolve: {
       extensions: ['.ts', '.js']
     },
-    stats: 'none',
+    stats: 'normal',
     plugins: [new HotModuleReplacementPlugin()]
   }
 }

@@ -8,14 +8,26 @@ export default async function entryFactory(
   list: Dirent[],
   config: PaConfig
 ): Promise<PaEntry[]> {
-  const { silent, debug, pageTemplate, exclude } = config
+  const { root, silent, debug, pageTemplate, exclude } = config
   const entryList: PaEntry[] = []
   const subFolderList: string[] = []
+  if (root == null) {
+    if (silent == null || !silent) {
+      console.log(colors.red('Can not find root.'))
+    }
+    throw new Error('Can not find root.')
+  }
+  if (pageTemplate == null) {
+    if (silent == null || !silent) {
+      console.log(colors.red('Can not find pageTemplate.'))
+    }
+    throw new Error('Can not find pageTemplate.')
+  }
   list.forEach(i => {
-    const entry = path.join(config.root, i.name)
+    const entry = path.join(root, i.name)
     const { dir, name, ext, base } = path.parse(entry)
     // exclude
-    if (checkExclude(i, exclude)) {
+    if (exclude != null && checkExclude(i, exclude)) {
       return
     }
     // simple mode
@@ -27,7 +39,7 @@ export default async function entryFactory(
         base,
         pageTemplate
       })
-      if (!silent && debug) {
+      if ((silent == null || !silent) && debug != null && debug) {
         console.log(`${name} built`)
       }
       return
@@ -40,9 +52,12 @@ export default async function entryFactory(
   if (subFolderList.length === 0) {
     return entryList
   }
-  const scanSubFolderRes = await scanSubFolder(config, subFolderList)
+  const scanSubFolderRes = await scanSubFolder(
+    config as Required<PaConfig>,
+    subFolderList
+  )
   const result = entryList.concat(scanSubFolderRes)
-  if (!silent) {
+  if (silent == null || !silent) {
     if (result.length === 0) {
       console.log(colors.yellow(`No entries found.`))
     } else {
@@ -57,7 +72,7 @@ export default async function entryFactory(
 }
 
 async function scanSubFolder(
-  config: PaConfig,
+  config: Required<PaConfig>,
   subFolderList: string[]
 ): Promise<PaEntry[]> {
   const {
