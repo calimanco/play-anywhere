@@ -1,4 +1,5 @@
 import { PaConfig } from './types'
+import path from 'path'
 import minimist from 'minimist'
 import helpPrinter from './lib/helpPrinter'
 import versionPrinter from './lib/versionPrinter'
@@ -21,7 +22,7 @@ export default function playAnywhere(): void {
     config.silent = true
   }
   if (argv._[0] != null) {
-    config.root = argv._[0]
+    config.root = path.resolve(argv._[0])
   }
   if (argv.p != null || argv.port != null || process.env.PORT != null) {
     config.serverPort =
@@ -32,5 +33,6 @@ export default function playAnywhere(): void {
   }
   main(config).catch(err => {
     console.log(err)
+    process.exit(0)
   })
 }

@@ -6,10 +6,6 @@ export function isPlainObject(val: any): val is Object {
   return toString.call(val) === '[object Object]'
 }
 
-export function isStrictNull(val: any): val is undefined | null {
-  return typeof val === 'undefined' || (typeof val === 'object' && val === null)
-}
-
 export function matchFile(fileList: Dirent[], reg: RegExp | string): string {
   let result: string = ''
   fileList.some(file => {
@@ -25,9 +21,9 @@ export function matchFile(fileList: Dirent[], reg: RegExp | string): string {
 export function deepMerge(...objs: any[]): any {
   const result = Object.create(null)
 
-  objs.forEach(obj => {
+  for (const obj of objs) {
     if (obj != null) {
-      Object.keys(obj).forEach(key => {
+      for (const key of Object.keys(obj)) {
         const val = obj[key]
         if (isPlainObject(val)) {
           if (isPlainObject(result[key])) {
@@ -38,9 +34,9 @@ export function deepMerge(...objs: any[]): any {
         } else {
           result[key] = val
         }
-      })
+      }
     }
-  })
+  }
 
   return result
 }

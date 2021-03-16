@@ -7,7 +7,7 @@ const templateDir = path.join(__dirname, '..', 'templates')
 const defaultConfig: Required<PaConfig> = {
   debug: false,
   silent: false,
-  root: path.resolve('demo'),
+  root: path.resolve(),
   staticDir: '',
   indexTemplate: path.join(templateDir, 'index.ejs'),
   pageTemplate: path.join(templateDir, 'page.ejs'),

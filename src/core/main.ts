@@ -1,5 +1,5 @@
 import { PaConfig } from '../types'
-import fs, { Dirent } from 'fs'
+import fs from 'fs'
 import * as colors from 'colors'
 import entryFactory from './entryFactory'
 import generateConfig from './generateConfig'
@@ -9,22 +9,24 @@ import defaultConfig from '../helpers/defaultConfig'
 
 export default async function main(c: PaConfig): Promise<void> {
   const config = mergeConfig(defaultConfig, c)
-  const { silent, root } = config
+  const { silent, root, debug } = config
   if (silent == null || !silent) {
     console.log(colors.cyan('Scan the folder and create entries.'))
   }
-  let readRootDirResult: Dirent[] = []
-  try {
-    if (root != null) {
-      readRootDirResult = fs.readdirSync(root, { withFileTypes: true })
+  if (root == null) {
+    if (silent == null || !silent) {
+      console.log(colors.red('Can not find root.'))
     }
-  } catch (err) {
-    console.error(err)
-    process.exit(0)
+    throw new Error('Can not find root.')
   }
+  const readRootDirResult = fs.readdirSync(root, { withFileTypes: true })
   const entries = await entryFactory(readRootDirResult, config)
   if (silent == null || !silent) {
     console.log(colors.cyan('The server is starting.'))
   }
-  server(generateConfig(config, entries))
+  const finalConfig = generateConfig(config, entries)
+  if ((silent == null || !silent) && debug != null && debug) {
+    console.log(finalConfig)
+  }
+  server(finalConfig)
 }

@@ -1,7 +1,8 @@
 import { PaConfig } from '../types'
 import { isPlainObject, deepMerge } from '../helpers/utils'
+import { merge } from 'webpack-merge'
 
-export interface Strategy {
+interface Strategy {
   keys: Array<keyof PaConfig>
   fn: (val1: any, val2: any) => any
 }
@@ -9,6 +10,13 @@ export interface Strategy {
 const strategies: {
   [key: string]: Strategy['fn']
 } = Object.create(null)
+
+const webpackStrategy: Strategy = {
+  keys: ['webpackConfig'],
+  fn: (val1, val2) => {
+    return merge(val1, val2)
+  }
+}
 
 const defaultStrategy: Strategy = {
   keys: [],
@@ -41,15 +49,33 @@ const deepMergeStrategy: Strategy = {
   }
 }
 
-fromVal2Strategy.keys.forEach(key => {
-  strategies[key] = fromVal2Strategy.fn
-})
+const unshiftArrayStrategy: Strategy = {
+  keys: ['entryMatch', 'templateMatch', 'exclude'],
+  fn: (val1, val2) => {
+    if (val2 != null && Array.isArray(val1) && Array.isArray(val2)) {
+      return ([] as any).concat(val2, val1)
+    }
+    return val1
+  }
+}
 
-deepMergeStrategy.keys.forEach(key => {
-  strategies[key] = deepMergeStrategy.fn
-})
+function initMergeSys(...arg: Strategy[]): void {
+  for (const strategy of arg) {
+    for (const key of strategy.keys) {
+      strategies[key] = deepMergeStrategy.fn
+    }
+  }
+}
 
 export default function mergeConfig(c1: PaConfig, c2?: PaConfig): PaConfig {
+  if (JSON.stringify(strategies) === '{}') {
+    initMergeSys(
+      webpackStrategy,
+      fromVal2Strategy,
+      deepMergeStrategy,
+      unshiftArrayStrategy
+    )
+  }
   const config: PaConfig = {}
 
   if (c2 != null) {

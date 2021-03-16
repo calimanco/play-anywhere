@@ -3,6 +3,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import sourceMaps from 'rollup-plugin-sourcemaps'
 import typescript from 'rollup-plugin-typescript2'
+import { terser } from 'rollup-plugin-terser'
 import { camelCase } from 'lodash'
 
 import pkg from './package.json'
@@ -17,7 +18,8 @@ export default {
       name: camelCase(libraryName),
       format: 'cjs',
       exports: 'auto',
-      sourcemap: true
+      sourcemap: false,
+      plugins: [terser()]
     }
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
@@ -28,7 +30,8 @@ export default {
     'webpack',
     'html-webpack-plugin',
     'webpack-dev-middleware',
-    'webpack-hot-middleware'
+    'webpack-hot-middleware',
+    'webpack-merge'
   ],
   watch: {
     include: 'src/**'

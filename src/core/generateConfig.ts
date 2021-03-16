@@ -14,7 +14,7 @@ export default function generateConfig(
     }
     throw new Error('Can not find webpack config.')
   }
-  if (silent == null || !silent) {
+  if (silent != null && silent) {
     webpackConfig.stats = 'none'
   }
   webpackConfig.entry = entries.reduce((result: any, i) => {

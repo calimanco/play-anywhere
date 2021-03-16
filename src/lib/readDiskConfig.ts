@@ -7,7 +7,7 @@ export default function readDistConfig(dir: string): {} | PaConfig {
     result = require(dir)
   } catch (err) {
     console.log(colors.red(err.message))
-    process.exit(1)
+    process.exit(0)
   }
   if (result == null) {
     console.log(colors.yellow('Configuration file is empty.'))

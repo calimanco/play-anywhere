@@ -11,12 +11,6 @@ export default async function entryFactory(
   const { root, silent, debug, pageTemplate, exclude } = config
   const entryList: PaEntry[] = []
   const subFolderList: string[] = []
-  if (root == null) {
-    if (silent == null || !silent) {
-      console.log(colors.red('Can not find root.'))
-    }
-    throw new Error('Can not find root.')
-  }
   if (pageTemplate == null) {
     if (silent == null || !silent) {
       console.log(colors.red('Can not find pageTemplate.'))
@@ -24,7 +18,7 @@ export default async function entryFactory(
     throw new Error('Can not find pageTemplate.')
   }
   list.forEach(i => {
-    const entry = path.join(root, i.name)
+    const entry = path.join(root as string, i.name)
     const { dir, name, ext, base } = path.parse(entry)
     // exclude
     if (exclude != null && checkExclude(i, exclude)) {
@@ -62,7 +56,7 @@ export default async function entryFactory(
       console.log(colors.yellow(`No entries found.`))
     } else {
       console.group(
-        colors.underline.cyan(`${result.length} entries have been created: `)
+        colors.underline.white(`${result.length} entries have been created: `)
       )
       console.log(colors.green(result.map(i => i.name).join('\n')))
       console.groupEnd()
