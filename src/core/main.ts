@@ -1,6 +1,6 @@
 import { PaConfig } from '../types'
 import fs from 'fs'
-import * as colors from 'colors'
+import colors from 'colors'
 import entryFactory from './entryFactory'
 import generateConfig from './generateConfig'
 import server from './server'

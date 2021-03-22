@@ -1,6 +1,6 @@
 import { PaEntry, PaConfig } from '../types'
 import path from 'path'
-import * as colors from 'colors'
+import colors from 'colors'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 export default function generateConfig(

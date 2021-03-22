@@ -1,7 +1,7 @@
 import { PaEntry, PaConfig } from '../types'
 import fs, { Dirent } from 'fs'
 import path from 'path'
-import * as colors from 'colors'
+import colors from 'colors'
 import { matchFile } from '../helpers/utils'
 
 export default async function entryFactory(

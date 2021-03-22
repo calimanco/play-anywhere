@@ -28,6 +28,7 @@ export default {
     'colors',
     'express',
     'webpack',
+    'copy-webpack-plugin',
     'html-webpack-plugin',
     'webpack-dev-middleware',
     'webpack-hot-middleware',

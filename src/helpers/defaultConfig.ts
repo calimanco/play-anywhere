@@ -1,6 +1,7 @@
 import { PaConfig } from '../types'
 import path from 'path'
 import { HotModuleReplacementPlugin } from 'webpack'
+import CopyPlugin from 'copy-webpack-plugin'
 
 const templateDir = path.join(__dirname, '..', 'templates')
 
@@ -46,8 +47,17 @@ const defaultConfig: Required<PaConfig> = {
     resolve: {
       extensions: ['.ts', '.js']
     },
-    stats: 'normal',
-    plugins: [new HotModuleReplacementPlugin()]
+    stats: {
+      colors: true
+    },
+    plugins: [
+      new CopyPlugin({
+        patterns: [
+          { from: path.join(templateDir, 'global.css'), to: 'global.css' }
+        ]
+      }),
+      new HotModuleReplacementPlugin()
+    ]
   }
 }
 

@@ -1,5 +1,5 @@
 import { PaConfig } from '../types'
-import * as colors from 'colors'
+import colors from 'colors'
 
 export default function readDistConfig(dir: string): {} | PaConfig {
   let result: any = {}
