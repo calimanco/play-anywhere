@@ -10,10 +10,6 @@ export default function (config: Required<PaConfig>): void {
   const { silent, webpackConfig, serverPort, staticDir } = config
   const compiler = webpack(webpackConfig)
 
-  if (staticDir != null && staticDir !== '') {
-    app.use(express.static(staticDir))
-  }
-
   app.use(
     webpackDevMiddleware(compiler, {
       publicPath:
@@ -24,6 +20,13 @@ export default function (config: Required<PaConfig>): void {
   )
 
   app.use(webpackHotMiddleware(compiler))
+
+  if (staticDir != null && staticDir !== '') {
+    app.use(express.static(staticDir))
+    if (silent == null || !silent) {
+      console.log(`Server mounted ${staticDir}`)
+    }
+  }
 
   app.listen(serverPort, () => {
     if ((silent == null || !silent) && serverPort != null) {
