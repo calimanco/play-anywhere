@@ -29,7 +29,7 @@ export default function playAnywhere(): void {
       argv.port != null ? argv.port : argv.p != null ? argv.p : process.env.PORT
   }
   if (argv['static-dir'] != null) {
-    config.staticDir = argv['static-dir']
+    config.staticDir = path.resolve(argv['static-dir'])
   }
   main(config).catch(err => {
     console.log(err)
