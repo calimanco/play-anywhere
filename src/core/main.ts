@@ -7,7 +7,7 @@ import server from './server'
 import mergeConfig from './mergeConfig'
 import defaultConfig from '../helpers/defaultConfig'
 
-export default async function main(c: PaConfig): Promise<void> {
+export default async function main(c: PaConfig): Promise<string> {
   const config = mergeConfig(defaultConfig, c)
   const { silent, root, debug } = config
   if (silent == null || !silent) {
@@ -28,5 +28,5 @@ export default async function main(c: PaConfig): Promise<void> {
   if ((silent == null || !silent) && debug != null && debug) {
     console.log(finalConfig)
   }
-  server(finalConfig)
+  return await server(finalConfig)
 }
