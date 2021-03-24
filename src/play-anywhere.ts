@@ -9,7 +9,7 @@ import main from './core/main'
 export default function playAnywhere(): void {
   const argv = minimist(process.argv.slice(2))
   let config: PaConfig = {}
-  if (argv.v === true || argv.help === true) {
+  if (argv.v === true || argv.version === true) {
     versionPrinter()
   }
   if (argv.h === true || argv.help === true) {

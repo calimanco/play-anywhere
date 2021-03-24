@@ -40,7 +40,7 @@ pa [path] [options]
 ```
 
 `path` optional, the default is the directory where the current command line is run, that is, `./`;  
-`options` optional, [available options](#available options).  
+`options` optional, [available options](#available-options).  
 The program will scan the files within `path` (non-recursively) and generate webpack entries, which are divided into "simple mode" and "complete mode".  
 
 ### Simple Mode
