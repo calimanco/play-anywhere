@@ -9,14 +9,16 @@ import main from './core/main'
 export default function playAnywhere(): void {
   const argv = minimist(process.argv.slice(2))
   let config: PaConfig = {}
-  if (argv.v === true) {
+  if (argv.v === true || argv.help === true) {
     versionPrinter()
   }
   if (argv.h === true || argv.help === true) {
     helpPrinter()
   }
   if (argv.c != null || argv.config != null) {
-    config = readDistConfig(argv.config != null ? argv.config : argv.c)
+    config = readDistConfig(
+      argv.config != null ? path.resolve(argv.config) : path.resolve(argv.c)
+    )
   }
   if (argv.s === true || argv.silent === true) {
     config.silent = true
