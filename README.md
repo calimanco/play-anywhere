@@ -1,11 +1,15 @@
 # play-anywhere
 
+[![Build Status](https://travis-ci.com/calimanco/play-anywhere.svg?branch=main)](https://travis-ci.com/calimanco/play-anywhere)
+[![NPM](https://img.shields.io/npm/l/play-anywhere)](https://www.npmjs.com/package/play-anywhere)
+[![npm](https://img.shields.io/npm/v/play-anywhere)](https://www.npmjs.com/package/play-anywhere)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## 简介
 
 开箱即用的命令行 webpack 开发服务器。  
-无需编写 HTML 和样式，专注脚本编写，自动生成入口。可用于快速验证想法，展示案例，本地开发，以及测试。
+无需编写 HTML 和样式，专注脚本编写，自动生成多页面应用。  
+可用于快速验证想法，展示案例，本地开发，以及测试。
 
 ---
 
@@ -38,17 +42,17 @@ pa [path] [options]
 P.S. 啪的一下，很快哦（笑）
 
 `path` 可选项，默认是当前命令行运行的目录，也就是`./`；  
-`options` 是可选项。  
+`options` 可选项，[可用选项](#可用选项)。  
 程序将扫描 `path` 下的文件（非递归），生成 webpack 入口，分为"简单模式"和"完整模式"。  
 
 ### 简单模式
 
-- `path` 目录下的 JS 或 TS 文件，以该文件的文件名生成同名入口，并生成同名的页面；
+- `path` 目录中的JS或TS文件，其文件名将用于生成条目和页面；
 - 页面只能由内置模板生成。
 
 ### 完整模式
 
-- `path` 目录下的子目录，如果子目录下有 `app.js` 或 `app.ts`，则生成与子目录名同名的入口，并生成同名的页面；
+- `path` 目录下有 `app.js` 或 `app.ts` 的子目录，其文件名将用于生成条目和页面；
 - 如果子目录下还有 `index.html`、`index.htm` 或 `index.ejs` 则将取代默认的模板生成页面。
 
 举个例子，假设有如下的目录结构：
@@ -63,7 +67,8 @@ demo
     └── app.js
 ```
 
-会生成以下三个 webpack 入口和同名的网页 `path` 。启动服务器默认监听 3000 端口。
+会生成以下三个 webpack 入口和同名的网页。  
+服务器默认监听 3000 端口。  
 首页 `http://localhost:3000` 会罗列出结果。映射关系如下：  
 
 ```
@@ -85,7 +90,7 @@ third   =>  http://localhost:3000/third
 - `-p [number]` / `--port [number]` 指定使用的端口（默认是 3000）。这也会从 `process.env.PORT` 获取。
 - `-h` / `--help` 打印帮助文档。
 - `-v` / `--version` 打印版本号。
-- `-s` / `--silent` 禁止输出日志消息，webpack 还是会少量打印。
+- `-s` / `--silent` 禁止输出日志消息。Webpack 还是会少量打印。
 - `--static-dir [path]` 设置静态目录，可用于一些静态资源的使用。
 - `-c --config [path]` 需要读取的配置文件，该配置会与默认配置合并。
 
@@ -125,7 +130,7 @@ interface PaConfig {
 ## 自定义 HTML
 
 默认下，HTML 均由内置的模板生成，即 indexTemplate 和 pageTemplate。一般不建议修改通用的模板。  
-如果想要自定义 HTML，可以在"完整模式"下，在子目录里编写 `index.htm`、`index.html` 或 `index.ejs`（默认规则）。  
+如果想要自定义 HTML，可以在子目录里编写 `index.htm`、`index.html` 或 `index.ejs`（默认规则）。  
 自定义样式可以直接引用到脚本文件内，它会被 `style-loader` 和 `css-loader` 处理。  
 可以形成如下目录结构：  
 
@@ -139,12 +144,12 @@ demo
 
 ## 自定义匹配规则
 
-匹配规则仅在"完整模式"下有效。规则由三部分构成，entryMatch、templateMatch 和 exclude。  
+匹配规则仅在"完整模式"下有效。规则由三部分构成，`entryMatch`、`templateMatch` 和 `exclude`。  
 他们各为一个正则/字符串数组，匹配优先级为从左往右。新增的规则将会"unshift"进旧规则列表，即新规则优先于老规则。    
 
-- entryMatch  用于匹配入口文件，即子目录里有匹配的文件，才会被判定为需要使用"完整模式"处理，默认是 `[/^app\.(ts|js)$/i]` ；
-- templateMatch  用于匹配 HTML 模板文件，是在上一个条件满足后才能进行匹配，默认是 `[/^index\.(htm|html|ejs)$/i]` ；
-- exclude  需要排除的目录或文件，同时作用与根目录和子目录的查找，默认是 `[/^node_modules$/i, /^\./i]` 。
+- `entryMatch`  用于匹配入口文件，即子目录里有匹配的文件，才会被判定为需要使用"完整模式"处理，默认是 `[/^app\.(ts|js)$/i]` ；
+- `templateMatch`  用于匹配 HTML 模板文件，是在上一个条件满足后才能进行匹配，默认是 `[/^index\.(htm|html|ejs)$/i]` ；
+- `exclude`  需要排除的目录或文件，该规则同时作用与根目录和子目录的查找，默认是 `[/^node_modules$/i, /^\./i]` 。
 
 
 ## 静态文件
@@ -177,7 +182,7 @@ play-anywhere demo --static-dir demo/public
 
 #### Q：当子目录中同时存在 `app.js` 和 `app.ts`，哪一个将作为入口文件？
 
-A：由于 NodeJS 读取文件的顺序是随机的，因此匹配结果也是随机，应该尽量避免这种情况的使用。
+A：由于 NodeJS 读取文件的顺序是随机的，因此匹配结果也是随机。请尽量避免这种情况的使用。
 
 ## LICENSE
 
