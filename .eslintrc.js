@@ -9,7 +9,8 @@ module.exports = {
         project: ['./tsconfig.eslint.json']
       },
       rules: {
-        '@typescript-eslint/no-floating-promises': 'off'
+        '@typescript-eslint/no-floating-promises': 'off',
+        '@typescript-eslint/prefer-ts-expect-error': 'off'
       }
     },
     {

@@ -11,6 +11,10 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
+    "noEmitHelpers": false,
+    "importHelpers":  true,
+    "noResolve": false,
+    "noEmit": false,
     "outDir": "compiled",
     "typeRoots": ["node_modules/@types"]
   },
