@@ -31,8 +31,15 @@ export default function playAnywhere(): void {
   if (argv['static-dir'] != null) {
     config.staticDir = path.resolve(argv['static-dir'])
   }
-  main(config).catch(err => {
-    console.log(err)
-    process.exit(0)
-  })
+  main(config)
+    .then(res => {
+      if (process.send != null) {
+        console.log('send message to parent')
+        process.send(res)
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      process.exit(0)
+    })
 }

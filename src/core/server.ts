@@ -6,7 +6,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware'
 
 const app = express()
 
-export default function (config: Required<PaConfig>): void {
+export default async function (config: Required<PaConfig>): Promise<string> {
   const { silent, webpackConfig, serverPort, staticDir } = config
   const compiler = webpack(webpackConfig)
 
@@ -28,11 +28,14 @@ export default function (config: Required<PaConfig>): void {
     }
   }
 
-  app.listen(serverPort, () => {
-    if ((silent == null || !silent) && serverPort != null) {
-      console.log(
-        `Server listening on http://localhost:${serverPort}, Ctrl+C to stop`
-      )
-    }
+  return await new Promise(resolve => {
+    app.listen(serverPort, () => {
+      if ((silent == null || !silent) && serverPort != null) {
+        console.log(
+          `Server listening on http://localhost:${serverPort}, Ctrl+C to stop`
+        )
+      }
+      resolve('Server ready')
+    })
   })
 }
