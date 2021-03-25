@@ -131,6 +131,7 @@ interface PaConfig {
 
 默认下，HTML 均由内置的模板生成，即 indexTemplate 和 pageTemplate。一般不建议修改通用的模板。  
 如果想要自定义 HTML，可以在子目录里编写 `index.htm`、`index.html` 或 `index.ejs`（默认规则）。  
+模板编写请参考 `html-webpack-plugin` 的 [文档](https://github.com/jantimon/html-webpack-plugin#writing-your-own-templates) 。  
 自定义样式可以直接引用到脚本文件内，它会被 `style-loader` 和 `css-loader` 处理。  
 可以形成如下目录结构：  
 

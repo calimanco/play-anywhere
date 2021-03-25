@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-process.title = 'play-anywhere'
-process.env.version = require('../package.json').version
+const { version, name, main } = require('../package.json')
+const { join } = require('path')
+process.title = name
+process.env.version = version
 
-require('../dist/play-anywhere.umd.js')()
+require(join(__dirname, '..', main))()
