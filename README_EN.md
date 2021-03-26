@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.com/calimanco/play-anywhere.svg?branch=main)](https://travis-ci.com/calimanco/play-anywhere)
 [![NPM](https://img.shields.io/npm/l/play-anywhere)](https://www.npmjs.com/package/play-anywhere)
 [![npm](https://img.shields.io/npm/v/play-anywhere)](https://www.npmjs.com/package/play-anywhere)
+![node-current](https://img.shields.io/node/v/play-anywhere)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Intro
