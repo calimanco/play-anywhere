@@ -1,12 +1,12 @@
-import { PaEntry, PaConfig } from '../types'
+import { IPaEntry, IPaConfig } from '../types'
 import path from 'path'
 import colors from 'colors'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 export default function generateConfig(
-  config: PaConfig,
-  entries: PaEntry[]
-): Required<PaConfig> {
+  config: IPaConfig,
+  entries: IPaEntry[]
+): Required<IPaConfig> {
   const { indexTemplate, webpackConfig, silent } = config
   if (webpackConfig == null) {
     if (silent == null || !silent) {
@@ -43,5 +43,5 @@ export default function generateConfig(
     webpackConfig.plugins !== undefined
       ? webpackConfig.plugins.concat(htmlPlugins)
       : htmlPlugins
-  return config as Required<PaConfig>
+  return config as Required<IPaConfig>
 }

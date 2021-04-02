@@ -1,9 +1,9 @@
-import { PaConfig } from '../types'
+import { IPaConfig } from '../types'
 import { isPlainObject, deepMerge } from '../helpers/utils'
 import { merge } from 'webpack-merge'
 
 interface Strategy {
-  keys: Array<keyof PaConfig>
+  keys: Array<keyof IPaConfig>
   fn: (val1: any, val2: any) => any
 }
 
@@ -67,7 +67,7 @@ function initMergeSys(...arg: Strategy[]): void {
   }
 }
 
-export default function mergeConfig(c1: PaConfig, c2?: PaConfig): PaConfig {
+export default function mergeConfig(c1: IPaConfig, c2?: IPaConfig): IPaConfig {
   if (JSON.stringify(strategies) === '{}') {
     initMergeSys(
       webpackStrategy,
@@ -76,21 +76,21 @@ export default function mergeConfig(c1: PaConfig, c2?: PaConfig): PaConfig {
       unshiftArrayStrategy
     )
   }
-  const config: PaConfig = {}
+  const config: IPaConfig = {}
 
   if (c2 != null) {
-    for (const key of Object.keys(c2) as Array<keyof PaConfig>) {
+    for (const key of Object.keys(c2) as Array<keyof IPaConfig>) {
       mergeField(key)
     }
   }
 
-  for (const key of Object.keys(c1) as Array<keyof PaConfig>) {
+  for (const key of Object.keys(c1) as Array<keyof IPaConfig>) {
     if (c2?.[key] == null) {
       mergeField(key)
     }
   }
 
-  function mergeField(key: keyof PaConfig): void {
+  function mergeField(key: keyof IPaConfig): void {
     const strategy =
       strategies[key] != null ? strategies[key] : defaultStrategy.fn
     config[key] = strategy(c1[key], c2?.[key])

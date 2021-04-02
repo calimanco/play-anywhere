@@ -1,4 +1,4 @@
-import { PaEntry, PaConfig } from '../types'
+import { IPaEntry, IPaConfig } from '../types'
 import fs, { Dirent } from 'fs'
 import path from 'path'
 import colors from 'colors'
@@ -6,10 +6,10 @@ import { matchFile } from '../helpers/utils'
 
 export default async function entryFactory(
   list: Dirent[],
-  config: PaConfig
-): Promise<PaEntry[]> {
+  config: IPaConfig
+): Promise<IPaEntry[]> {
   const { root, silent, debug, pageTemplate, exclude } = config
-  const entryList: PaEntry[] = []
+  const entryList: IPaEntry[] = []
   const subFolderList: string[] = []
   if (pageTemplate == null) {
     if (silent == null || !silent) {
@@ -47,7 +47,7 @@ export default async function entryFactory(
     return entryList
   }
   const scanSubFolderRes = await scanSubFolder(
-    config as Required<PaConfig>,
+    config as Required<IPaConfig>,
     subFolderList
   )
   const result = entryList.concat(scanSubFolderRes)
@@ -66,9 +66,9 @@ export default async function entryFactory(
 }
 
 async function scanSubFolder(
-  config: Required<PaConfig>,
+  config: Required<IPaConfig>,
   subFolderList: string[]
-): Promise<PaEntry[]> {
+): Promise<IPaEntry[]> {
   const {
     root,
     silent,
@@ -79,7 +79,7 @@ async function scanSubFolder(
     pageTemplate
   } = config
   const length = subFolderList.length
-  const entryList: PaEntry[] = []
+  const entryList: IPaEntry[] = []
   const errMsg: string[] = []
   let count = 0
 
@@ -138,7 +138,7 @@ function buildEntry(
   templateMatch: Array<RegExp | string>,
   pageTemplate: string,
   fileList: Dirent[]
-): PaEntry | null {
+): IPaEntry | null {
   let entryFilePath = ''
   let templateFilePath = ''
   entryMatch.some(reg => {

@@ -1,7 +1,7 @@
-import { PaConfig } from '../types'
+import { IPaConfig } from '../types'
 import colors from 'colors'
 
-export default function readDistConfig(dir: string): {} | PaConfig {
+export default function readDistConfig(dir: string): {} | IPaConfig {
   let result: any = {}
   try {
     result = require(dir)

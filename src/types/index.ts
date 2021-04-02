@@ -1,6 +1,6 @@
 import { Configuration } from 'webpack'
 
-export interface PaEntry {
+export interface IPaEntry {
   name: string
   ext: string
   dir: string
@@ -8,7 +8,7 @@ export interface PaEntry {
   pageTemplate: string
 }
 
-export interface PaConfig {
+export interface IPaConfig {
   debug?: boolean
   silent?: boolean
   root?: string

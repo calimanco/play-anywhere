@@ -1,14 +1,15 @@
-import { PaConfig } from '../types'
+import { Server } from 'http'
+import { IPaConfig } from '../types'
 import fs from 'fs'
 import colors from 'colors'
 import entryFactory from './entryFactory'
 import generateConfig from './generateConfig'
 import server from './server'
 import mergeConfig from './mergeConfig'
-import defaultConfig from '../helpers/defaultConfig'
+import getDefaultConfig from '../helpers/defaultConfig'
 
-export default async function main(c: PaConfig): Promise<string> {
-  const config = mergeConfig(defaultConfig, c)
+export default async function main(c: IPaConfig): Promise<Server> {
+  const config = mergeConfig(getDefaultConfig(), c)
   const { silent, root, debug } = config
   if (silent == null || !silent) {
     console.log(colors.cyan('Scan the folder and create entries.'))
