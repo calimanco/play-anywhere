@@ -7,7 +7,7 @@ import readDistConfig from './lib/readDiskConfig'
 import main from './core/main'
 
 export default async function playAnywhere(...args: any[]): Promise<IPaServer> {
-  const argv = minimist(process.argv.length > 2 ? process.argv.slice(2) : args)
+  const argv = minimist(args.length > 0 ? args : process.argv.slice(2))
   let config: IPaConfig = {}
   if (argv.v === true || argv.version === true) {
     versionPrinter()
