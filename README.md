@@ -180,7 +180,56 @@ play-anywhere demo --static-dir demo/public
 <script src="/other.js"></script>
 ```
 
-## Q & A
+## NodeJS API
+
+作为依赖包进行安装后，play-anywhere 可以引入到 NodeJS 项目中使用。  
+
+```javascript
+const pa = require('play-anywhere')
+```
+
+### 启动服务
+
+暴露的函数可以直接运行，用于启动服务，接受参数与命令行相同。  
+每次运行都为独立实体，理论上可以同时启动多个服务，但注意端口号要不同。  
+函数将返回一个 promise 对象，当服务器启动并首次完成编译，将触发 resolve。
+
+```javascript
+// Without arguments.
+pa().then((res) => {
+  const server1 = res
+})
+// Or with arguments, use async-await instead.
+const server2 = await pa('demo', '-p', '5000')
+```
+
+resolve 的结果为 IPaServer 对象。  
+
+- `origin`  NodeJS 的 [net.Server](https://nodejs.org/api/net.html#net_class_net_server) 对象。  
+- `close`  关闭服务的方法。
+- `getConfig`  获取完整配置对象的方法。
+
+```typescript
+interface IPaServer {
+  origin: Server
+  close: () => Promise<void>
+  getConfig: () => IPaConfig
+}
+```
+
+### 关闭服务
+
+可使用 IPaServer 对象的 close 方法关闭服务。  
+该方法本质是对 net.Server 的 close 方法的封装。  
+该方法返回 promise 对象，完成关闭时触发 resolve。  
+
+```javascript
+server.close().then(()=>{
+  console.log('Server is down.')
+})
+```
+
+## Q&A
 
 #### Q：当子目录中同时存在 `app.js` 和 `app.ts`，哪一个将作为入口文件？
 

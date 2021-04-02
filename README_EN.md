@@ -178,7 +178,55 @@ You can use `public/other.js` in `third/index.ejs`:
 <script src="/other.js"></script>
 ```
 
-## Q & A
+## NodeJS API
+
+After being installed as a dependent package, play-anywhere can be imported in the NodeJS project.  
+
+```javascript
+const pa = require('play-anywhere')
+```
+
+### Start Service
+
+The exposed function can be run directly to start the service, and accept the same parameters as the command line.  
+Each run is an independent entity. In theory, multiple services can be started at the same time, but the port numbers should be different.  
+The function will return a promise object. When the server starts and compiles for the first time, resolve will be triggered.  
+
+```javascript
+// Without arguments.
+pa().then((res) => {
+  const server1 = res
+})
+// Or with arguments, use async-await instead.
+const server2 = await pa('demo', '-p', '5000')
+```
+
+The result of resolve is an IPaServer object.
+
+- `origin`  [net.Server](https://nodejs.org/api/net.html#net_class_net_server) object of NodeJS。
+- `close`  The method to close the service.
+- `getConfig`  The method to get the complete configuration object.
+
+```typescript
+interface IPaServer {
+  origin: Server
+  close: () => Promise<void>
+  getConfig: () => IPaConfig
+}
+```
+### Stop Service
+
+You can use the close method of the IPaServer object to close the service.  
+This method is essentially an encapsulation of the close method of net.Server.  
+This method returns a promise object, which triggers resolve when it is closed.  
+
+```javascript
+server.close().then(()=>{
+  console.log('Server is down.')
+})
+```
+
+## Q&A
 
 #### Q：When both `app.js` and `app.ts` exist in a subdirectory, which one will be the entry file?
 

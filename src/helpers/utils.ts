@@ -1,3 +1,4 @@
+import { Server } from 'http'
 import { Dirent } from 'fs'
 
 const toString = Object.prototype.toString
@@ -39,4 +40,16 @@ export function deepMerge(...objs: any[]): any {
   }
 
   return result
+}
+
+export async function closeServer(server: Server): Promise<void> {
+  return await new Promise((resolve, reject) => {
+    server.close(err => {
+      if (err != null) {
+        reject(err)
+        return
+      }
+      resolve()
+    })
+  })
 }

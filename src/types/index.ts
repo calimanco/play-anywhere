@@ -1,3 +1,4 @@
+import { Server } from 'http'
 import { Configuration } from 'webpack'
 
 export interface IPaEntry {
@@ -20,4 +21,10 @@ export interface IPaConfig {
   templateMatch?: Array<string | RegExp>
   exclude?: Array<string | RegExp>
   webpackConfig?: Configuration
+}
+
+export interface IPaServer {
+  origin: Server
+  close: () => Promise<void>
+  getConfig: () => IPaConfig
 }

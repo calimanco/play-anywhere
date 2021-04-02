@@ -1,5 +1,4 @@
-import { Server } from 'http'
-import { IPaConfig } from '../types'
+import { IPaConfig, IPaServer } from '../types'
 import fs from 'fs'
 import colors from 'colors'
 import entryFactory from './entryFactory'
@@ -7,8 +6,9 @@ import generateConfig from './generateConfig'
 import server from './server'
 import mergeConfig from './mergeConfig'
 import getDefaultConfig from '../helpers/defaultConfig'
+import { closeServer } from '../helpers/utils'
 
-export default async function main(c: IPaConfig): Promise<Server> {
+export default async function main(c: IPaConfig): Promise<IPaServer> {
   const config = mergeConfig(getDefaultConfig(), c)
   const { silent, root, debug } = config
   if (silent == null || !silent) {
@@ -29,5 +29,10 @@ export default async function main(c: IPaConfig): Promise<Server> {
   if ((silent == null || !silent) && debug != null && debug) {
     console.log(finalConfig)
   }
-  return await server(finalConfig)
+  const originServer = await server(finalConfig)
+  return {
+    origin: originServer,
+    close: async () => await closeServer(originServer),
+    getConfig: () => finalConfig
+  }
 }

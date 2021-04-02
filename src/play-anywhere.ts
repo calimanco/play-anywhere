@@ -1,5 +1,4 @@
-import { Server } from 'http'
-import { IPaConfig } from './types'
+import { IPaConfig, IPaServer } from './types'
 import { resolve } from 'path'
 import minimist from 'minimist'
 import helpPrinter from './lib/helpPrinter'
@@ -7,8 +6,8 @@ import versionPrinter from './lib/versionPrinter'
 import readDistConfig from './lib/readDiskConfig'
 import main from './core/main'
 
-export default async function playAnywhere(): Promise<Server> {
-  const argv = minimist(process.argv.slice(2))
+export default async function playAnywhere(...args: any[]): Promise<IPaServer> {
+  const argv = minimist(process.argv.length > 2 ? process.argv.slice(2) : args)
   let config: IPaConfig = {}
   if (argv.v === true || argv.version === true) {
     versionPrinter()
