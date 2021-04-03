@@ -1,4 +1,4 @@
-import { IPaConfig } from '../types'
+import { IPaConfig } from '../declarations'
 import { isPlainObject, deepMerge } from '../helpers/utils'
 import { merge } from 'webpack-merge'
 

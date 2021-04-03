@@ -1,9 +1,12 @@
 import playAnywhere from './play-anywhere'
-import { name, version } from '../package.json'
 import { join } from 'path'
+import { readFileSync } from 'fs'
 
-process.title = name
-process.env.version = version
+const jsonPackage = join(__dirname, '..', 'package.json')
+const pkg = JSON.parse(readFileSync(jsonPackage).toString())
+
+process.title = pkg.name
+process.env.version = pkg.version
 process.env.templateDir = join(__dirname, '..', 'templates')
 
 // export main

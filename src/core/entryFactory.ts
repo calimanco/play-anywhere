@@ -1,4 +1,4 @@
-import { IPaEntry, IPaConfig } from '../types'
+import { IPaEntry, IPaConfig } from '../declarations'
 import fs, { Dirent } from 'fs'
 import path from 'path'
 import colors from 'colors'

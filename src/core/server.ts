@@ -1,5 +1,5 @@
 import { Server } from 'http'
-import { IPaConfig } from '../types'
+import { IPaConfig } from '../declarations'
 import express from 'express'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'

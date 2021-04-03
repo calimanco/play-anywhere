@@ -1,4 +1,4 @@
-import { IPaConfig } from '../types'
+import { IPaConfig } from '../declarations'
 import colors from 'colors'
 
 export default function readDistConfig(dir: string): {} | IPaConfig {

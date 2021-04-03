@@ -1,4 +1,4 @@
-import { IPaConfig, IPaServer } from './types'
+import { IPaConfig, IPaServer } from './declarations'
 import { resolve } from 'path'
 import minimist from 'minimist'
 import helpPrinter from './lib/helpPrinter'

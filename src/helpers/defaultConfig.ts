@@ -1,4 +1,4 @@
-import { IPaConfig } from '../types'
+import { IPaConfig } from '../declarations'
 import path from 'path'
 import { HotModuleReplacementPlugin } from 'webpack'
 import CopyPlugin from 'copy-webpack-plugin'

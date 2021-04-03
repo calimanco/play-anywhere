@@ -1,4 +1,4 @@
-import { IPaConfig, IPaServer } from '../types'
+import { IPaConfig, IPaServer } from '../declarations'
 import fs from 'fs'
 import colors from 'colors'
 import entryFactory from './entryFactory'

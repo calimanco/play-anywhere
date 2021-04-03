@@ -1,4 +1,4 @@
-import { IPaEntry, IPaConfig } from '../types'
+import { IPaEntry, IPaConfig } from '../declarations'
 import path from 'path'
 import colors from 'colors'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
