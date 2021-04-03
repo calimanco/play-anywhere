@@ -9,5 +9,8 @@ process.title = pkg.name
 process.env.version = pkg.version
 process.env.templateDir = join(__dirname, '..', 'templates')
 
+// export types
+export * from './declarations'
+
 // export main
 export default playAnywhere
