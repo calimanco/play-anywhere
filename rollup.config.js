@@ -20,7 +20,8 @@ export default {
       exports: 'auto',
       sourcemap: false,
       plugins: [terser()]
-    }
+    },
+    { file: pkg.module, format: 'es', sourcemap: true, plugins: [terser()] }
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [
