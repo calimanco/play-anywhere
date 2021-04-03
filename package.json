@@ -10,6 +10,7 @@
     "http"
   ],
   "main": "dist/play-anywhere.cjs.js",
+  "typings": "dist/types/index.d.ts",
   "bin": {
     "play-anywhere": "./bin/play-anywhere",
     "pa": "./bin/play-anywhere"
