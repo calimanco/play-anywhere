@@ -109,7 +109,10 @@ third   =>  http://localhost:3000/third
 
 默认配置已经能够满足大部分需求，但如果需要完全自定义，可以自行编写配置文件。配置文件是一个 CommonJS 模块文件。  
 所有选项都是可选。遇到与命令行选项相同功能的字段，则以命令行的输入为优先。  
-请使用绝对路径。
+注意：请使用绝对路径。
+
+- `webpackConfig` 请参考 Webpack [文档](https://webpack.docschina.org/configuration/) 。
+- `serveStaticConfig` 请参考 serve-static [文档](http://expressjs.com/en/resources/middleware/serve-static.html) 。
 
 ```typescript
 interface PaConfig {
@@ -121,6 +124,8 @@ interface PaConfig {
   root?: string
   // Specify the static directory. The same as "--static-dir" CMD option.
   staticDir?: string
+  // Specify the path which static directory mapping to.
+  staticPath?: string
   // Specify the server port. The same as "-p / --port" CMD option.
   serverPort?: number
   // Specify homepage html template file.
@@ -135,6 +140,8 @@ interface PaConfig {
   exclude?: Array<string | RegExp>
   // The config of webpack. It will use 'webpack-merge' to merge.
   webpackConfig?: Configuration
+  // The config of serve-static. The official default configuration will be used by default.
+  serveStaticConfig?: ServeStaticOptions<Response> | null
 }
 ```
 
@@ -166,6 +173,8 @@ demo
 ## 静态文件
 
 可能遇到需要在网页中加载不需要被 Webpack 处理的文件，可以将一个目录设置为静态文件目录。  
+默认映射到 `http://localhost:3000/public` 下，您可以通过配置里的 `staticPath` 进行更改。  
+通过配置里的 `serveStaticConfig` 可以进行更多自定义。  
 比如有如下文件：
 
 ```
@@ -183,10 +192,10 @@ demo
 play-anywhere demo --static-dir demo/public
 ```
 
-就可以在 `third/index.ejs` 里使用 `public/other.js`：
+现在可以在 `third/index.ejs` 里使用 `public/other.js`：
 
 ```html
-<script src="/other.js"></script>
+<script src="public/other.js"></script>
 ```
 
 ## NodeJS API
@@ -251,6 +260,10 @@ import { IPaConfig, IPaServer } from 'play-anywhere'
 #### Q：当子目录中同时存在 `app.js` 和 `app.ts`，哪一个将作为入口文件？
 
 A：由于 NodeJS 读取文件的顺序是随机的，因此匹配结果也是随机。请尽量避免这种情况的使用。
+
+#### Q：当静态文件与 Webpack 生成的文件冲突时，哪个优先？
+
+A：将以 Webpack 生成的文件为优先。
 
 ## LICENSE
 
