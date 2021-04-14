@@ -2,13 +2,21 @@ import { Server } from 'http'
 import { IPaConfig } from '../declarations'
 import express from 'express'
 import webpack from 'webpack'
+import colors from 'colors'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 
 const app = express()
 
 export default async function (config: Required<IPaConfig>): Promise<Server> {
-  const { silent, webpackConfig, serverPort, staticDir } = config
+  const {
+    silent,
+    webpackConfig,
+    serverPort,
+    staticDir,
+    staticPath,
+    serveStaticConfig
+  } = config
   const compiler = webpack(webpackConfig)
   const instance = webpackDevMiddleware(compiler, {
     publicPath:
@@ -22,9 +30,13 @@ export default async function (config: Required<IPaConfig>): Promise<Server> {
   app.use(webpackHotMiddleware(compiler))
 
   if (staticDir != null && staticDir !== '') {
-    app.use(express.static(staticDir))
+    if (serveStaticConfig != null) {
+      app.use(staticPath, express.static(staticDir, serveStaticConfig))
+    } else {
+      app.use(staticPath, express.static(staticDir))
+    }
     if (silent == null || !silent) {
-      console.log(`Server mounted ${staticDir}`)
+      console.log(colors.cyan(`Server mounted ${staticDir}`))
     }
   }
 
@@ -32,12 +44,16 @@ export default async function (config: Required<IPaConfig>): Promise<Server> {
     const server = app.listen(serverPort, () => {
       if ((silent == null || !silent) && serverPort != null) {
         console.log(
-          `Server listening on http://localhost:${serverPort}, Ctrl+C to stop.`
+          colors.cyan(
+            `Server listening on http://localhost:${serverPort}, Ctrl+C to stop.`
+          )
         )
       }
     })
     instance.waitUntilValid(() => {
-      console.log('Package is in a valid state.')
+      if (silent == null || !silent) {
+        console.log(colors.cyan('Package is in a valid state.'))
+      }
       resolve(server)
     })
   })

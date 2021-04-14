@@ -10,6 +10,7 @@ function getDefaultConfig(): Required<IPaConfig> {
     silent: false,
     root: path.resolve(),
     staticDir: '',
+    staticPath: '/public',
     indexTemplate: path.join(templateDir, 'index.ejs'),
     pageTemplate: path.join(templateDir, 'page.ejs'),
     serverPort: 3000,
@@ -58,7 +59,8 @@ function getDefaultConfig(): Required<IPaConfig> {
         }),
         new HotModuleReplacementPlugin()
       ]
-    }
+    },
+    serveStaticConfig: null
   }
 }
 
