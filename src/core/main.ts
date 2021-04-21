@@ -1,6 +1,6 @@
 import { IPaConfig, IPaServer } from '../declarations'
 import fs from 'fs'
-import colors from 'colors'
+import colors from 'chalk'
 import entryFactory from './entryFactory'
 import generateConfig from './generateConfig'
 import server from './server'

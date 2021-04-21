@@ -2,7 +2,7 @@ import { Server } from 'http'
 import { IPaConfig } from '../declarations'
 import express from 'express'
 import webpack from 'webpack'
-import colors from 'colors'
+import colors from 'chalk'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 

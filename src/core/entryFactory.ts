@@ -1,7 +1,7 @@
 import { IPaEntry, IPaConfig } from '../declarations'
 import fs, { Dirent } from 'fs'
 import path from 'path'
-import colors from 'colors'
+import colors from 'chalk'
 import { matchFile } from '../helpers/utils'
 
 export default async function entryFactory(
@@ -56,7 +56,7 @@ export default async function entryFactory(
       console.log(colors.yellow(`No entries found.`))
     } else {
       console.group(
-        colors.underline.white(`${result.length} entries have been created: `)
+        colors.underline(`${result.length} entries have been created: `)
       )
       console.log(colors.green(result.map(i => i.name).join('\n')))
       console.groupEnd()

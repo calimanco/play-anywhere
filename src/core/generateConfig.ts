@@ -1,6 +1,6 @@
 import { IPaEntry, IPaConfig } from '../declarations'
 import path from 'path'
-import colors from 'colors'
+import colors from 'chalk'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 export default function generateConfig(

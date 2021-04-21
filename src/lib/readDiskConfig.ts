@@ -1,5 +1,5 @@
 import { IPaConfig } from '../declarations'
-import colors from 'colors'
+import colors from 'chalk'
 
 export default function readDistConfig(dir: string): {} | IPaConfig {
   let result: any = {}
