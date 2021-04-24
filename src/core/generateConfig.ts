@@ -19,7 +19,7 @@ export default function generateConfig(
   }
   webpackConfig.entry = entries.reduce((result: any, i) => {
     result[i.name] = {
-      import: path.join(i.dir, i.base)
+      import: ['webpack-hot-middleware/client', path.join(i.dir, i.base)]
     }
     return result
   }, {})
