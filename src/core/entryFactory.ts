@@ -25,7 +25,7 @@ export default async function entryFactory(
       return
     }
     // simple mode
-    if (i.isFile() && ext.match(/(ts|js)$/i) !== null) {
+    if (i.isFile() && ext.match(/\.(ts|js)$/i) !== null) {
       entryList.push({
         dir,
         name,
