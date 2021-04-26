@@ -45,7 +45,7 @@ export default async function (config: Required<IPaConfig>): Promise<Server> {
       if ((silent == null || !silent) && serverPort != null) {
         console.log(
           colors.cyan(
-            `Server listening on http://localhost:${serverPort}, Ctrl+C to stop.`
+            `Server listening on http://localhost:${serverPort}, Ctrl+C to stop.\n`
           )
         )
       }

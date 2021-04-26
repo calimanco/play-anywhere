@@ -24,7 +24,7 @@ export default {
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [
     'minimist',
-    'colors',
+    'chalk',
     'express',
     'webpack',
     'copy-webpack-plugin',
@@ -52,7 +52,7 @@ export default {
       tsconfigOverride: {
         compilerOptions: {
           removeComments: true,
-          module: 'ES2015'
+          module: 'ES6'
         }
       }
     }),
