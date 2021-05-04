@@ -31,7 +31,8 @@ export default {
     'html-webpack-plugin',
     'webpack-dev-middleware',
     'webpack-hot-middleware',
-    'webpack-merge'
+    'webpack-merge',
+    'tslib'
   ],
   watch: {
     include: 'src/**'
